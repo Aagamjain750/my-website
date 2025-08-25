@@ -1,0 +1,55 @@
+/* Beautiful modern UI */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    text-align: center;
+    background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1950&q=80') 
+                no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Overlay for readability */
+.overlay {
+    background: rgba(0, 0, 0, 0.65);
+    min-height: 100vh;
+    padding: 50px;
+}
+
+/* Card style */
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Buttons */
+button {
+    background: #ff9800;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #e68900;
+    transform: scale(1.05);
+}
+
+/* Inputs */
+input {
+    padding: 12px;
+    width: 80%;
+    margin: 12px 0;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Submit Project</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c')
+                  no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: white;
+      font-size: 32px;
+      text-shadow: 2px 2px 5px black;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 10px 0 5px;
+      color: white;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    input, textarea {
+      background: #fff3b0; /* yellow */
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Submit Your Project</h2>
+    <form action="/submit_project" method="POST">
+      <label>Name:</label>
+      <input type="text" name="name" required>
+
+      <label>Email:</label>
+      <input type="email" name="email" required>
+
+      <label>Phone Number:</label>
+      <input type="text" name="phone" required>
+
+      <label>Project Title:</label>
+      <input type="text" name="title" required>
+
+      <label>Description:</label>
+      <textarea name="description" rows="4" required></textarea>
+
+      <button type="submit">Submit Project</button>
+    </form>
+  </div>
+</body>
+</html>
