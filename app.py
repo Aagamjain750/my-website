@@ -1,61 +1,63 @@
 import os
-import smtplib
 import random
+import requests
 from flask import Flask, render_template, request, redirect, url_for, session
 
-# Load environment variables
-SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
-SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD")
+FAST2SMS_API_KEY = os.getenv("FAST2SMS_API_KEY") or "tFkXluLIbg4xKep9WyqcPQaBzCZS6j2sOi13oJ0wm5NGnAUfH80SQIALD2l3WxX64km19NMip8vEOZRU"
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # Session ke liye
+app.secret_key = "supersecretkey"
 
 otp_store = {}
 
-# Home Page
 @app.route('/')
 def home():
     return render_template('home.html')
 
-# Project Form
 @app.route('/project_form', methods=['GET', 'POST'])
 def project_form():
     if request.method == 'POST':
-        email = request.form['email']
+        phone = request.form['phone']
         otp = str(random.randint(1000, 9999))
-        otp_store[email] = otp
+        otp_store[phone] = otp
+        print(f"OTP for {phone} is {otp}")  # Debugging
 
-        # Send OTP
         try:
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()
-            server.login(SENDER_EMAIL, SENDER_PASSWORD)
-            server.sendmail(SENDER_EMAIL, email, f"Your OTP is {otp}")
-            server.quit()
+            url = "https://www.fast2sms.com/dev/bulkV2"
+            payload = {
+                "variables_values": otp,
+                "route": "otp",
+                "numbers": phone
+            }
+            headers = {
+                "authorization": FAST2SMS_API_KEY
+            }
+            response = requests.post(url, data=payload, headers=headers)
+            print("Fast2SMS Response:", response.text)  # Debugging
+            if response.status_code != 200:
+                return f"SMS Error: {response.text}"
         except Exception as e:
             return f"Error: {e}"
 
-        session['email'] = email
+        session['phone'] = phone
         return redirect(url_for('otp_verify'))
 
     return render_template('project_form.html')
 
-# OTP Verify
 @app.route('/otp_verify', methods=['GET', 'POST'])
 def otp_verify():
-    email = session.get('email')
-    if not email:
+    phone = session.get('phone')
+    if not phone:
         return redirect(url_for('home'))
 
     if request.method == 'POST':
         entered_otp = request.form['otp']
-        if email in otp_store and otp_store[email] == entered_otp:
+        if phone in otp_store and otp_store[phone] == entered_otp:
             return "✅ OTP Verified Successfully!"
         else:
             return "❌ Invalid OTP, try again."
 
     return render_template('otp_verify.html')
-
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
