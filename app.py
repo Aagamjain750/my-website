@@ -1,18 +1,14 @@
 import os
 import smtplib
 import random
-from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, session
 
-# Load .env file
-load_dotenv()
-
-# Environment se email/password lena
-SENDER_EMAIL = os.getenv("SENDER_EMAIL")
-SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
+# Load environment variables
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
+SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD")
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # session ke liye
+app.secret_key = "supersecretkey"  # Session ke liye
 
 otp_store = {}
 
@@ -62,4 +58,5 @@ def otp_verify():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
