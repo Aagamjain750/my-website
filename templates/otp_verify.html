@@ -1,28 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Verify OTP</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>OTP Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        h2 {
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>🔐 OTP Verification</h1>
-  </header>
-
-  <div class="container">
-    <div class="card">
-      <h2>Enter OTP</h2>
-      <form action="{{ url_for('verify_otp') }}" method="POST">
-        <input type="hidden" name="phone" value="{{ phone }}">
-        <input type="text" name="otp" placeholder="Enter OTP" required>
-        <button type="submit">Verify</button>
-      </form>
+    <div class="container">
+        <h2>Enter OTP</h2>
+        <form method="POST" action="/otp_verify">
+            <input type="text" name="otp" placeholder="Enter OTP" required>
+            <br>
+            <button type="submit">Verify</button>
+        </form>
     </div>
-  </div>
-
-  <footer>
-    <p>&copy; 2025 Project Website</p>
-  </footer>
 </body>
 </html>
