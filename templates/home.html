@@ -3,44 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="fast2sms" content="yW0KAo8P2nrZvkcRwG2o6UTKATUgVv5Z">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Portal - Home</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f') no-repeat center/cover;
-            height: 100vh;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
             color: white;
-            margin: 0; padding: 0;
-        }
-        .overlay {
-            background: rgba(0,0,0,0.6);
+            margin: 0;
+            padding: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+        }
+        .container {
             text-align: center;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
-        h1 { font-size: 3rem; margin-bottom: 1rem; }
-        .btn-group { margin-top: 20px; }
-        .btn-group form { display: inline-block; margin: 0 10px; }
-        .btn-group button {
-            background-color: #007bff; border: none; color: white;
-            padding: 12px 25px; font-size: 1rem; border-radius: 8px; cursor: pointer;
-            transition: 0.3s;
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
         }
-        .btn-group button:hover { background-color: #0056b3; }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        button {
+            background-color: #00c6ff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: #0072ff;
+        }
     </style>
 </head>
 <body>
-    <div class="overlay">
+    <div class="container">
         <h1>🚀 Welcome to Project Portal</h1>
         <p>Submit your project securely with OTP verification.</p>
-        <div class="btn-group">
-            <form action="{{ url_for('project_form') }}" method="get">
-                <button type="submit">Submit Project</button>
-            </form>
-        </div>
+        <form action="{{ url_for('project_form') }}" method="get">
+            <button type="submit">Submit Project</button>
+        </form>
     </div>
 </body>
 </html>
