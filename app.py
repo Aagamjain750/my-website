@@ -1,30 +1,24 @@
+from flask import Flask, render_template, request, redirect, url_for, session
 import os
 import random
 import requests
-from flask import Flask, render_template, request, redirect, url_for, session
-
-# Load Fast2SMS API key from environment variable
-FAST2SMS_API_KEY = os.getenv("FAST2SMS_API_KEY") or "tFkXluLIbg4xKep9WyqcPQaBzCZS6j2sOi13oJ0wm5NGnAUfH80SQIALD2l3WxX64km19NMip8vEOZRU"
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # Used for session management
+app.secret_key = "supersecretkey"
 
-# Temporary in-memory OTP store
-otp_store = {}
-
-# Home page
+# ✅ Serve static index.html at root for Fast2SMS verification
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return app.send_static_file('index.html')
 
-# Project submission form
+# Project form page
 @app.route('/project_form', methods=['GET', 'POST'])
 def project_form():
     if request.method == 'POST':
         phone = request.form['phone']
         otp = str(random.randint(1000, 9999))
-        otp_store[phone] = otp
-        print(f"OTP for {phone} is {otp}")  # Debugging
+        session['phone'] = phone
+        session['otp'] = otp
 
         # Send OTP via Fast2SMS
         try:
@@ -36,17 +30,14 @@ def project_form():
                 "message": f"Your OTP is {otp}"
             }
             headers = {
-                "authorization": FAST2SMS_API_KEY,
+                "authorization": os.getenv("FAST2SMS_API_KEY") or "YOUR_API_KEY",
                 "Content-Type": "application/x-www-form-urlencoded"
             }
             response = requests.post(url, data=payload, headers=headers)
             print("Fast2SMS Response:", response.text)
-            if response.status_code != 200:
-                return f"SMS Error: {response.text}"
         except Exception as e:
             return f"Error sending SMS: {e}"
 
-        session['phone'] = phone
         return redirect(url_for('otp_verify'))
 
     return render_template('project_form.html')
@@ -55,12 +46,14 @@ def project_form():
 @app.route('/otp_verify', methods=['GET', 'POST'])
 def otp_verify():
     phone = session.get('phone')
-    if not phone:
-        return redirect(url_for('home'))
+    otp = session.get('otp')
+
+    if not phone or not otp:
+        return redirect(url_for('project_form'))
 
     if request.method == 'POST':
         entered_otp = request.form['otp']
-        if otp_store.get(phone) == entered_otp:
+        if entered_otp == otp:
             return "✅ OTP Verified Successfully!"
         else:
             return "❌ Invalid OTP, try again."
